@@ -6,7 +6,7 @@ const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
   const { contract } = useContract('0xFe1189d04e574BE81c3bf7055b9bB3A00D59Dfe4');
-  const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign');
+  const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCompain');
 
   const address = useAddress();
   const connect = useMetamask();
@@ -33,6 +33,7 @@ export const StateContextProvider = ({ children }) => {
       value={{
         address,
         contract,
+        connect,
         createCampaign: publishCampaign,
       }}
     >
