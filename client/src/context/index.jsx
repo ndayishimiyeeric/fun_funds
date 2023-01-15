@@ -21,11 +21,29 @@ export const StateContextProvider = ({ children }) => {
         new Date(form.deadline).getTime(), // deadline
         form.image, // image
       ]);
-      console.log("Contract call sussess",data);
     } catch (error) {
       console.log("Contract call error",error);
     }
     
+  };
+
+  const getCampaigns = async () => { 
+    try {
+      const campaigns = await contract.call('getCompaigns');
+      const data = campaigns.map((campaign, id) => ({
+        owner: campaign.owner,
+        title: campaign.title,
+        description: campaign.description,
+        goal: ethers.utils.formatEther(campaign.goal.toString()),
+        deadline: campaign.deadline.toNumber(),
+        amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
+        image: campaign.image,
+        pid: id,
+      }));
+      return data;
+    } catch (error) {
+      console.log("Contract call error",error);
+    }
   };
 
   return (
@@ -35,6 +53,7 @@ export const StateContextProvider = ({ children }) => {
         contract,
         connect,
         createCampaign: publishCampaign,
+        getCampaigns,
       }}
     >
       {children}
